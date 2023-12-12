@@ -23,7 +23,7 @@ def main():
     part2 = part1.clone()
     part2.floors[0].update(["ElG", "ElM", "DlG", "DlM"])
 
-    find_best(part1)
+    find_best(part2)
     # find_best(part2)
 
 
@@ -32,12 +32,11 @@ def find_best(start):
     todo = collections.deque([start])
     seen = set()
 
-    while todo:
-        state = todo.popleft()
-        if state.key() in seen:
-            continue
+    ohno = 0
 
-        seen.add(state.key())
+    while todo:
+        ohno = max(ohno, len(todo))
+        state = todo.popleft()
 
         if state.is_done():
             print(f"DONE: {state}")
@@ -46,9 +45,13 @@ def find_best(start):
         if state.steps > best:
             continue
 
-        todo.extend(state.next())
+        for candidate in state.next():
+            k = candidate.key()
+            if k not in seen:
+                seen.add(k)
+                todo.append(candidate)
 
-    print(f"best: {best}")
+    print(f"best: {best} ({ohno=})")
 
 
 @dataclass

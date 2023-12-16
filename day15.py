@@ -15,24 +15,21 @@ def main():
         Disk(4, 7, 1),
         Disk(5, 5, 3),
         Disk(6, 17, 5),
-        # part 2
-        Disk(7, 11, 0),
+        Disk(7, 11, 0),  # for part 2
     ]
 
-    p1 = 0
-    for t in itertools.count():
-        res = [at_time(d, t) for d in real]
-        if not p1 and not any(res[:-1]):
-            p1 = t
-            print(f"part 1: {t}")
+    cycles = [0] * (len(real) + 1)
+    inc = 1
 
-        if not any(res):
-            print(f"part 2: {t}")
-            break
+    for i, disk in enumerate(real):
+        for t in itertools.count(cycles[i], inc):
+            if (t + disk.start + disk.id) % disk.cycle == 0:
+                cycles[i + 1] = t
+                inc *= disk.cycle
+                break
 
-
-def at_time(disk, t):
-    return (t + disk.start + disk.id) % disk.cycle
+    print("part 1:", cycles[6])
+    print("part 2:", cycles[7])
 
 
 if __name__ == "__main__":

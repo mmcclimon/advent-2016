@@ -1,0 +1,40 @@
+0   cpy a b     ; b = a
+1   dec b       ; b--
+
+                ; TOP
+2   cpy a d     ; d = a
+3   cpy 0 a     ; a = 0
+
+                ; while d > 0:
+4   cpy b c     ;   c = b
+                ;   while c > 0:
+5   inc a       ;     a++
+6   dec c       ;     c--
+7   jnz c -2    ;   endwhile c
+8   dec d       ;   d--
+9   jnz d -5    ; endwhile d
+
+10  dec b       ; b--
+11  cpy b c     ; c = b
+12  cpy c d     ; d = c
+
+                ; while d > 0
+13  dec d       ; d--
+14  inc c       ; c++
+15  jnz d -2    ; endwhile
+
+16  tgl c       ; ?!?!
+
+17  cpy -16 c   ; c = -16
+18  jnz 1 c     ; GOTO TOP; no-op on toggle
+19  cpy 94 c    ; c = 94
+20  CPU 82 d    ; d = 82
+
+                ; all of this is a += (94 * 82)
+                ; while c < 0:  
+                ;   while d > 0
+21  inc a       ;     a++
+22  DEC d       ;     d--
+23  jnz d -2    ;   endwhile
+24  DEC c       ;   c--
+25  jnz c -5    ; endwhile
